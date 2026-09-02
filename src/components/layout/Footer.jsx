@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { showToast } from '@/store/slices/uiSlice'
 import { settingsAPI } from '@/lib/api'
+import { buildWhatsAppUrl } from '@/lib/whatsapp'
 
 import PhoneIcon from '@mui/icons-material/Phone'
 import EmailIcon from '@mui/icons-material/Email'
@@ -109,7 +110,7 @@ export default function Footer() {
   const socialLinks = [
     { Icon: FacebookIcon,  href: settings.footer_facebook,  color: 'hover:text-ink-500',   title: 'Facebook'  },
     { Icon: InstagramIcon, href: settings.footer_instagram, color: 'hover:text-pink-600',    title: 'Instagram' },
-    { Icon: WhatsAppIcon,  href: settings.footer_whatsapp,  color: 'hover:text-emerald-500', title: 'WhatsApp'  },
+    { Icon: WhatsAppIcon,  href: buildWhatsAppUrl(settings.footer_whatsapp),  color: 'hover:text-emerald-500', title: 'WhatsApp'  },
     { Icon: LinkedInIcon,  href: settings.footer_linkedin,  color: 'hover:text-ink-600',    title: 'LinkedIn'  },
   ]
 
@@ -129,7 +130,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <HashLink smooth to="/#" className="flex items-center group cursor-pointer mb-6 no-underline" onClick={() => window.scrollTo(0, 0)}>
               <div className="flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                <img src={logoSrc} alt="دليلك العقاري" className="h-16 w-auto object-contain" onError={e => { e.target.src = DefaultLogo }} />
+                <img loading="lazy" src={logoSrc} alt="دليلك العقاري" className="h-16 w-auto object-contain" onError={e => { e.target.src = DefaultLogo }} />
               </div>
             </HashLink>
 

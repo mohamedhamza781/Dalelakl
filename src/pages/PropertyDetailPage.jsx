@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useTranslation } from "react-i18next"
 import { showToast } from "@/store/slices/uiSlice"
 import { propertiesAPI, reportsAPI, settingsAPI } from "@/lib/api"
+import { buildWhatsAppUrl } from "@/lib/whatsapp"
 
 // Components
 import PropertyCard from "@/components/property/PropertyCard"
@@ -83,25 +84,12 @@ export default function PropertyDetailPage() {
 
   // ── إرسال طلب معاينة عبر واتساب مباشرة (رقم الموقع العام — الأدمن هو من يتحكم بالعقارات) ──
   const buildWhatsAppLink = () => {
-    let phone = (siteWhatsapp || '').replace(/[^\d+]/g, '')
-
-    // لو الرقم رابط واتساب جاهز (wa.me/... أو https://) استخدمه زي ما هو
-    if (siteWhatsapp && siteWhatsapp.includes('wa.me')) {
-      return siteWhatsapp.startsWith('http') ? siteWhatsapp : `https://${siteWhatsapp}`
-    }
-
-    if (!phone) return null
-
-    // تأكيد وجود رمز الدولة (فلسطين افتراضياً لو الرقم يبدأ بـ 0)
-    if (phone.startsWith('0')) phone = '970' + phone.slice(1)
-    phone = phone.replace(/^\+/, '')
-
     const propertyTitle = isEn && p?.titleEn ? p.titleEn : p?.title
     const msg = isEn
       ? `Hi, I'd like to book a viewing for: ${propertyTitle} (${window.location.href})`
       : `مرحباً، حاب أحجز معاينة لعقار: ${propertyTitle} (${window.location.href})`
 
-    return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`
+    return buildWhatsAppUrl(siteWhatsapp, msg)
   }
 
   const handleBookingClick = () => {
@@ -194,7 +182,7 @@ export default function PropertyDetailPage() {
                 style={{ background: p.gradient || '#1a3a5c' }}
               >
                 {images[imgIdx] ? (
-                  <img
+                  <img loading="lazy"
                     key={imgIdx}
                     src={images[imgIdx]}
                     alt={p.title}
@@ -241,7 +229,7 @@ export default function PropertyDetailPage() {
                   >
                     <NavigateBeforeIcon sx={{ fontSize: 20 }} />
                   </button>
-                  <span className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm text-white text-[10px] font-black px-3 py-1 rounded-full">
+                  <span className="absolute bottom-5 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-sm text-white text-[10px] font-black px-3 py-1 rounded-full" dir="ltr">
                     {imgIdx + 1} / {images.length}
                   </span>
                 </>
@@ -255,7 +243,7 @@ export default function PropertyDetailPage() {
                   <div key={i} onClick={() => setImgIdx(i)}
                     className={`shrink-0 snap-start w-20 h-16 sm:w-24 sm:h-20 rounded-2xl overflow-hidden cursor-pointer transition-all border-4 ${i === imgIdx ? "border-ink-500" : "border-white hover:border-cream-300 shadow-sm"}`}
                     style={{ background: p.gradient || '#1a3a5c' }}>
-                    <img src={img} alt="" className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none' }} />
+                    <img loading="lazy" src={img} alt="" className="w-full h-full object-cover" onError={(e) => { e.target.style.display = 'none' }} />
                   </div>
                 ))}
               </div>

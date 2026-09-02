@@ -796,7 +796,7 @@ export default function AdminPage() {
               </div>
             </div>
             <div className="w-14 h-14 bg-cream-300 rounded-2xl border-4 border-white shadow-md overflow-hidden">
-              <img src={`https://ui-avatars.com/api/?name=${user?.name || 'Admin'}&background=0f172a&color=fff`} alt="admin" />
+              <img loading="lazy" src={`https://ui-avatars.com/api/?name=${user?.name || 'Admin'}&background=0f172a&color=fff`} alt="admin" />
             </div>
           </div>
         </header>
@@ -882,7 +882,7 @@ export default function AdminPage() {
                         <td className="px-10 py-6">
                           <div className="flex items-center gap-4">
                             <div className="w-11 h-11 bg-cream-200 rounded-2xl overflow-hidden">
-                              <img src={`https://ui-avatars.com/api/?name=${u.name}&background=e2e8f0&color=0f172a&size=44`} alt="" />
+                              <img loading="lazy" src={`https://ui-avatars.com/api/?name=${u.name}&background=e2e8f0&color=0f172a&size=44`} alt="" />
                             </div>
                             <div>
                               <div className="text-sm font-black text-ink-400">{u.name}</div>
@@ -952,7 +952,7 @@ export default function AdminPage() {
                     <div className="flex justify-between items-start mb-4">
                       <div className="w-14 h-14 bg-cream-100 rounded-2xl overflow-hidden">
                         {p.images?.[0] ? (
-                          <img src={p.images[0].startsWith('http') ? p.images[0] : `http://localhost:5000${p.images[0]}`} alt="" className="w-full h-full object-cover" />
+                          <img loading="lazy" src={p.images[0].startsWith('http') ? p.images[0] : `http://localhost:5000${p.images[0]}`} alt="" className="w-full h-full object-cover" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-2xl">{p.emoji || '🏠'}</div>
                         )}
@@ -1066,7 +1066,7 @@ export default function AdminPage() {
                     <label className="text-xs font-black text-ink-100 mb-2 block">صورة الحي</label>
                     <div className="flex gap-3 items-center">
                       <div className="w-20 h-20 rounded-2xl overflow-hidden bg-cream-200 flex items-center justify-center flex-shrink-0 border border-cream-300">
-                        {nbImagePreview ? <img src={nbImagePreview} className="w-full h-full object-cover" alt="" /> : <span className="text-2xl">{nbForm.emoji || '🏘️'}</span>}
+                        {nbImagePreview ? <img loading="lazy" src={nbImagePreview} className="w-full h-full object-cover" alt="" /> : <span className="text-2xl">{nbForm.emoji || '🏘️'}</span>}
                       </div>
                       <label className="flex-1 cursor-pointer">
                         <div className="flex items-center gap-2 bg-cream-100 border border-dashed border-cream-400 rounded-2xl px-4 py-3 hover:border-brass-light hover:bg-cream-200/30 transition-all">
@@ -1130,7 +1130,7 @@ export default function AdminPage() {
                     {featuredNeighborhoods.map(n => (
                       <div key={n.id} className="flex items-center gap-3 p-4 hover:bg-cream-100/50">
                         <div className="w-12 h-12 rounded-2xl overflow-hidden flex-shrink-0" style={{ background: n.gradient || 'linear-gradient(135deg,#1a3a5c,#0D2B45)' }}>
-                          {n.image ? <img src={n.image.startsWith('http') ? n.image : `http://localhost:5000${n.image}`} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-xl">{n.emoji || '🏘️'}</div>}
+                          {n.image ? <img loading="lazy" src={n.image.startsWith('http') ? n.image : `http://localhost:5000${n.image}`} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-xl">{n.emoji || '🏘️'}</div>}
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="font-black text-ink-500 text-sm truncate">{n.neighborhood}</div>
@@ -1179,7 +1179,7 @@ export default function AdminPage() {
                   </div>
                   <div className="p-6 flex items-center gap-6">
                     <div className="w-32 h-32 rounded-3xl border-2 border-dashed border-cream-300 bg-cream-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
-                      {logoPreview ? <img src={logoPreview} alt="logo" className="w-full h-full object-contain p-2" /> : <div className="text-center text-cream-400"><ImageIcon sx={{ fontSize: 40 }} /><p className="text-[10px] font-black mt-1">لا يوجد لوجو</p></div>}
+                      {logoPreview ? <img loading="lazy" src={logoPreview} alt="logo" className="w-full h-full object-contain p-2" /> : <div className="text-center text-cream-400"><ImageIcon sx={{ fontSize: 40 }} /><p className="text-[10px] font-black mt-1">لا يوجد لوجو</p></div>}
                     </div>
                     <div className="flex-1 space-y-3">
                       <label className="block cursor-pointer">
@@ -1277,7 +1277,7 @@ export default function AdminPage() {
                             siteContent.hero_property_id === String(p.id) ? 'bg-amber-100 border border-amber-300' : 'hover:bg-cream-100 border border-transparent'
                           }`}>
                           <div className="w-10 h-10 rounded-xl overflow-hidden bg-cream-200 flex-shrink-0">
-                            {p.images?.[0] ? <img src={p.images[0].startsWith('http') ? p.images[0] : `http://localhost:5000${p.images[0]}`} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-lg">{p.emoji || '🏠'}</div>}
+                            {p.images?.[0] ? <img loading="lazy" src={p.images[0].startsWith('http') ? p.images[0] : `http://localhost:5000${p.images[0]}`} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full flex items-center justify-center text-lg">{p.emoji || '🏠'}</div>}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="text-sm font-black text-ink-500 truncate">{p.title}</div>
@@ -1314,7 +1314,7 @@ export default function AdminPage() {
                       <div className="flex gap-4 items-center">
                         <div className="w-24 h-24 rounded-2xl overflow-hidden bg-cream-300 flex-shrink-0 border border-cream-300">
                           {(aboutImagePreview || siteContent.about_image) ? (
-                            <img src={aboutImagePreview || (siteContent.about_image?.startsWith('http') ? siteContent.about_image : `http://localhost:5000${siteContent.about_image}`)} className="w-full h-full object-cover" alt="about preview" />
+                            <img loading="lazy" src={aboutImagePreview || (siteContent.about_image?.startsWith('http') ? siteContent.about_image : `http://localhost:5000${siteContent.about_image}`)} className="w-full h-full object-cover" alt="about preview" />
                           ) : (
                             <div className="w-full h-full flex items-center justify-center text-ink-50"><ImageIcon sx={{ fontSize: 32 }} /></div>
                           )}
@@ -1522,7 +1522,7 @@ export default function AdminPage() {
                         {[
                           { key: 'footer_facebook',  label: 'Facebook',  Icon: FacebookIcon,  placeholder: 'https://facebook.com/yourpage',   color: 'focus:border-brass' },
                           { key: 'footer_instagram', label: 'Instagram', Icon: InstagramIcon, placeholder: 'https://instagram.com/yourhandle', color: 'focus:border-pink-500' },
-                          { key: 'footer_whatsapp',  label: 'WhatsApp',  Icon: WhatsAppIcon,  placeholder: 'https://wa.me/970XXXXXXXXX',       color: 'focus:border-emerald-500' },
+                          { key: 'footer_whatsapp',  label: 'WhatsApp',  Icon: WhatsAppIcon,  placeholder: '0599XXXXXX أو https://wa.me/970599XXXXXX',       color: 'focus:border-emerald-500' },
                           { key: 'footer_linkedin',  label: 'LinkedIn',  Icon: LinkedInIcon,  placeholder: 'https://linkedin.com/company/...',  color: 'focus:border-ink-600' },
                         ].map(({ key, label, Icon, placeholder, color }) => (
                           <div key={key}>
@@ -2196,7 +2196,7 @@ export default function AdminPage() {
                   <label className="text-[10px] font-black text-ink-50 uppercase">صورة العضو</label>
                   <div className="flex items-center gap-3">
                     {teamForm.image && (
-                      <img
+                      <img loading="lazy"
                         src={teamForm.image.startsWith('http') ? teamForm.image : `${import.meta.env.VITE_API_URL?.replace('/api','') || 'http://localhost:5000'}${teamForm.image}`}
                         className="w-14 h-14 rounded-2xl object-cover border border-cream-200"
                         alt="preview"
@@ -2285,7 +2285,7 @@ export default function AdminPage() {
                   <div key={m.id} className="bg-white rounded-[2rem] border border-cream-200 shadow-sm overflow-hidden">
                     <div className="h-32 bg-cream-200 relative overflow-hidden">
                       {m.image ? (
-                        <img src={m.image.startsWith('http') ? m.image : `${import.meta.env.VITE_API_URL?.replace('/api','') || 'http://localhost:5000'}${m.image}`}
+                        <img loading="lazy" src={m.image.startsWith('http') ? m.image : `${import.meta.env.VITE_API_URL?.replace('/api','') || 'http://localhost:5000'}${m.image}`}
                           className="w-full h-full object-cover object-top" alt={m.name} />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
