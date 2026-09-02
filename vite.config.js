@@ -11,6 +11,7 @@ export default defineConfig({
       injectRegister: 'auto',
       includeAssets: ['favicon-32x32.png', 'apple-touch-icon.png'],
       manifest: {
+        id: '/',
         name: 'دليلك العقاري',
         short_name: 'دليلك العقاري',
         description: 'منصتك الأولى للبحث عن العقارات في فلسطين',
