@@ -97,11 +97,8 @@ export default function Footer() {
     company: [
       { label: isEn ? 'About Us'       : 'من نحن',          to: '/#about-us' },
       { label: isEn ? 'Our Services'   : 'خدماتنا',         to: '/#services' },
-      { label: isEn ? 'Privacy Policy' : 'سياسة الخصوصية', to: '/privacy' },
-      { label: isEn ? 'Terms of Use'   : 'شروط الاستخدام',  to: '/terms' },
     ],
     support: [
-      { label: isEn ? 'Help Center'     : 'مركز المساعدة', to: '/help' },
       { label: isEn ? 'Contact Support' : 'تواصل معنا',    to: '/contact' },
       { label: isEn ? 'FAQs'           : 'الأسئلة الشائعة', to: '/#faq' },
     ],

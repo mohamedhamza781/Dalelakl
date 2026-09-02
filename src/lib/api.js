@@ -64,7 +64,14 @@ export const propertiesAPI = {
     return get(`/properties?${params.toString()}`)
   },
   getById:     (slugOrId) => get(`/properties/${slugOrId}`),
-  getFeatured: ()         => get('/properties/featured'),
+  getFeatured: (filters = {}) => {
+    const params = new URLSearchParams()
+    Object.entries(filters).forEach(([k, v]) => {
+      if (v !== undefined && v !== null && v !== '' && v !== 'all') params.append(k, v)
+    })
+    const qs = params.toString()
+    return get(`/properties/featured${qs ? `?${qs}` : ''}`)
+  },
   getStats:    ()         => get('/properties/stats'),
   create:      (data)     => post('/properties', data),
   update:      (id, data) => put(`/properties/${id}`, data),

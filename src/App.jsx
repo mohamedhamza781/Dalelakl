@@ -14,10 +14,6 @@ import PWAInstallPrompt from '@/components/PWAInstallPrompt'
 import OfflineScreen from '@/components/OfflineScreen'
 import PropertyComparePage from '@/pages/PropertyComparePage'
 
-import PrivacyPage from '@/pages/PrivacyPage'
-import TermsPage from '@/pages/TermsPage'
-import HelpPage from '@/pages/HelpPage'
-
 import { useScrollToHash } from './hooks/useScrollToHash';
 
 import ContactPage from '@/pages/ContactPage';
@@ -71,9 +67,6 @@ export default function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           
-          <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/terms" element={<TermsPage />} />
-          <Route path="/help" element={<HelpPage />} />
           <Route path="/compare" element={<PropertyComparePage />} />
 
           <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />

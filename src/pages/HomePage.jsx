@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom"
 import { useDispatch } from "react-redux"
 import { useTranslation } from "react-i18next"
 import { setFilters, fetchFeatured, fetchProperties } from "@/store/slices/propertiesSlice"
-import { settingsAPI, teamAPI } from "@/lib/api"
+import { settingsAPI, teamAPI, propertiesAPI } from "@/lib/api"
 
 import PropertyCard from "@/components/property/PropertyCard"
 import AIRecommendations from "@/components/property/AIRecommendations"
@@ -133,31 +133,51 @@ export default function HomePage() {
   const [siteSettings, setSiteSettings] = useState(null)
   const [heroProperty, setHeroProperty] = useState(null)
   const [featuredProps, setFeaturedProps] = useState([])
+  const [loadingFeatured, setLoadingFeatured] = useState(true)
   const [loadingSettings, setLoadingSettings] = useState(true)
   const [teamMembers, setTeamMembers] = useState([])
 
   useEffect(() => {
     const loadAll = async () => {
       try {
-        const [settingsRes, featuredRes] = await Promise.all([
-          settingsAPI.getPublic(),
-          fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/properties?limit=6`).then(r => r.json()),
-        ])
+        const settingsRes = await settingsAPI.getPublic()
 
         teamAPI.getPublic()
           .then(res => setTeamMembers((res.members || []).slice(0, 4)))
           .catch(() => {})
         setSiteSettings(settingsRes.settings)
         setHeroProperty(settingsRes.settings?.hero_property || null)
-        setFeaturedProps(featuredRes.properties || [])
       } catch {
-        setFeaturedProps([])
+        // تجاهل — الحقول هترجع فاضية والصفحة بتضل شغالة
       } finally {
         setLoadingSettings(false)
       }
     }
     loadAll()
   }, [])
+
+  // ── تحميل العقارات المميزة من الداتابيز حسب التبويب المختار (كل/بيع/إيجار/شقق/فلل/أراضي) ──
+  // كل تبويب بيسوي طلب منفصل للباك اند (فلترة حقيقية على الداتابيز)، مش فلترة على نسخة محلية قديمة.
+  useEffect(() => {
+    let cancelled = false
+    const loadFeatured = async () => {
+      setLoadingFeatured(true)
+      try {
+        const filters = {}
+        if (tab === 'sale' || tab === 'rent') filters.type = tab
+        if (tab === 'apt' || tab === 'villa' || tab === 'land') filters.category = tab
+
+        const res = await propertiesAPI.getFeatured(filters)
+        if (!cancelled) setFeaturedProps(res.properties || [])
+      } catch {
+        if (!cancelled) setFeaturedProps([])
+      } finally {
+        if (!cancelled) setLoadingFeatured(false)
+      }
+    }
+    loadFeatured()
+    return () => { cancelled = true }
+  }, [tab])
 
   const services = Array.isArray(siteSettings?.services) && siteSettings.services.length > 0
     ? siteSettings.services
@@ -196,16 +216,6 @@ export default function HomePage() {
     { key: "villa", label: t('home.tabVilla') },
     { key: "land",  label: t('home.tabLand') },
   ]
-
-  const shownFeatured = (() => {
-    let list = featuredProps
-    if (tab === "sale")  list = list.filter(p => p.type === "sale"  || p.type === "SALE")
-    if (tab === "rent")  list = list.filter(p => p.type === "rent"  || p.type === "RENT")
-    if (tab === "apt")   list = list.filter(p => p.category === "apt"   || p.category === "APT")
-    if (tab === "villa") list = list.filter(p => p.category === "villa" || p.category === "VILLA")
-    if (tab === "land")  list = list.filter(p => p.category === "land"  || p.category === "LAND")
-    return list.slice(0, 6)
-  })()
 
   const doSearch = () => {
     dispatch(setFilters({ search: q }))
@@ -450,9 +460,15 @@ export default function HomePage() {
           ))}
         </div>
 
-        {shownFeatured.length > 0 ? (
+        {loadingFeatured ? (
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
-            {shownFeatured.map((p, i) => <div key={p.id} data-aos="fade-up" data-aos-delay={`${i * 100}`} data-aos-duration="600"><PropertyCard property={p} homeVariant /></div>)}
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-cream-200 rounded-2xl sm:rounded-[2.5rem] animate-pulse h-56 sm:h-80" />
+            ))}
+          </div>
+        ) : featuredProps.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-8">
+            {featuredProps.map((p, i) => <div key={p.id} data-aos="fade-up" data-aos-delay={`${i * 100}`} data-aos-duration="600"><PropertyCard property={p} homeVariant /></div>)}
           </div>
         ) : (
           <div className="text-center py-20 text-ink-50 font-bold">لا توجد عقارات في هذه الفئة حالياً</div>
