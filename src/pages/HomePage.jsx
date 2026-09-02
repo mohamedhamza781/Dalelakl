@@ -72,12 +72,12 @@ const FEMALE_ICONS = {
 }
 const ALL_AVATAR_ICONS = { ...MALE_ICONS, ...FEMALE_ICONS }
 
-function TestimonialAvatar({ icon, gender, size = 30 }) {
+function TestimonialAvatar({ icon, gender, size = 30, className = 'w-14 h-14 rounded-2xl' }) {
   const key = icon || (gender === 'female' ? 'Face3' : 'Person')
   const entry = ALL_AVATAR_ICONS[key] || (gender === 'female' ? FEMALE_ICONS.Face3 : MALE_ICONS.Person)
   const { Icon, color, bg } = entry
   return (
-    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-colors ${bg}`}>
+    <div className={`flex items-center justify-center transition-colors ${bg} ${className}`}>
       <Icon sx={{ fontSize: size, color }} />
     </div>
   )
@@ -222,7 +222,7 @@ export default function HomePage() {
       <section className="relative min-h-[92vh] flex items-center overflow-hidden bg-white pb-20 pt-12 lg:pt-16">
         {heroImageUrl && (
           <div className="absolute inset-0 select-none pointer-events-none">
-            <img
+            <img loading="lazy"
               src={heroImageUrl}
               alt=""
               className="w-full h-full object-cover opacity-[0.04] scale-105 blur-md"
@@ -243,36 +243,51 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
           
-          <div className="lg:col-span-7 text-center lg:text-right">
-            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.18] mb-6 text-ink-500 tracking-tight">
-              {heroText.line1}
-              <br />
-              <span className="relative inline-block my-1">
-                <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-l from-ink-500 via-ink-400 to-ink-300">
-                  {heroText.line2}
+          <div className="order-2 lg:order-1 lg:col-span-7 text-center lg:text-right">
+            {loadingSettings ? (
+              <div className="animate-pulse mb-6">
+                <div className="h-12 sm:h-16 lg:h-20 bg-cream-200 rounded-2xl mb-3 mx-auto lg:mx-0 max-w-lg" />
+                <div className="h-12 sm:h-16 lg:h-20 bg-cream-200 rounded-2xl mb-3 mx-auto lg:mx-0 max-w-md" />
+                <div className="h-12 sm:h-16 lg:h-20 bg-cream-200 rounded-2xl mx-auto lg:mx-0 max-w-sm" />
+              </div>
+            ) : (
+              <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.18] mb-6 text-ink-500 tracking-tight">
+                {heroText.line1}
+                <br />
+                <span className="relative inline-block my-1">
+                  <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-l from-ink-500 via-ink-400 to-ink-300">
+                    {heroText.line2}
+                  </span>
+                  <svg
+                    className="absolute -bottom-2 right-0 w-full h-3.5 z-0"
+                    viewBox="0 0 200 12"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M2 9 C 60 2, 140 2, 198 9"
+                      stroke="#94A3B8"
+                      strokeWidth="4"
+                      fill="none"
+                      strokeLinecap="round"
+                      opacity="0.3"
+                    />
+                  </svg>
                 </span>
-                <svg
-                  className="absolute -bottom-2 right-0 w-full h-3.5 z-0"
-                  viewBox="0 0 200 12"
-                  preserveAspectRatio="none"
-                >
-                  <path
-                    d="M2 9 C 60 2, 140 2, 198 9"
-                    stroke="#94A3B8"
-                    strokeWidth="4"
-                    fill="none"
-                    strokeLinecap="round"
-                    opacity="0.3"
-                  />
-                </svg>
-              </span>
-              <br />
-              {heroText.line3}
-            </h1>
+                <br />
+                {heroText.line3}
+              </h1>
+            )}
 
-            <p className="text-ink-200 text-base sm:text-lg lg:text-xl mb-10 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed">
-              {heroText.subtitle}
-            </p>
+            {loadingSettings ? (
+              <div className="animate-pulse mb-10">
+                <div className="h-5 bg-cream-200 rounded-full mb-2 mx-auto lg:mx-0 max-w-xl" />
+                <div className="h-5 bg-cream-200 rounded-full mx-auto lg:mx-0 max-w-md" />
+              </div>
+            ) : (
+              <p className="text-ink-200 text-base sm:text-lg lg:text-xl mb-10 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                {heroText.subtitle}
+              </p>
+            )}
 
             <div className="max-w-2xl mx-auto lg:mx-0 bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-2 sm:p-2.5 shadow-2xl shadow-ink-500/5 transition-all focus-within:border-slate-400 focus-within:shadow-slate-200/50">
               <div className="flex flex-col sm:flex-row gap-2">
@@ -306,12 +321,12 @@ export default function HomePage() {
           </div>
 
           {heroProperty && (
-            <div className="hidden lg:block lg:col-span-5 relative">
-              <div className="relative group">
+            <div className="order-1 lg:order-2 mb-10 lg:mb-0 lg:mt-0 lg:col-span-5 relative">
+              <div className="relative group max-w-sm mx-auto lg:max-w-none">
                 <div className="absolute -inset-1.5 bg-white/30 rounded-[2.5rem] blur-xl opacity-40 group-hover:opacity-60 transition duration-500" />
 
                 <div className="relative bg-ink-500 rounded-[2.2rem] overflow-hidden border border-white/10 shadow-2xl shadow-ink-500/30">
-                  <div className="h-[380px] relative overflow-hidden bg-ink-600">
+                  <div className="h-64 sm:h-80 lg:h-[380px] relative overflow-hidden bg-ink-600">
                     {heroImageUrl ? (
                       <img
                         src={heroImageUrl}
@@ -449,7 +464,7 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div className="relative">
               <div className="relative z-10 rounded-[3.5rem] overflow-hidden shadow-2xl transform -rotate-2 hover:rotate-0 transition-transform duration-700">
-                <img
+                <img loading="lazy"
                   src={aboutImageUrl}
                   alt="About Us"
                   className="w-full h-[600px] object-cover"
@@ -538,21 +553,21 @@ export default function HomePage() {
               <div className="w-24 h-1.5 bg-ink-500 rounded-full mb-6" />
               <p className="text-ink-100 text-lg max-w-2xl font-medium leading-relaxed">بشهادة المئات من عملائنا السعداء في جميع أنحاء فلسطين.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 md:gap-10">
               {testimonials.map((item, i) => (
-                <div key={item.id || i} className="bg-white p-10 rounded-[3rem] border border-cream-200 shadow-xl shadow-cream-300/30 relative group hover:-translate-y-3 transition-all duration-500">
-                  <div className="absolute -top-5 right-10 w-12 h-12 bg-ink-500 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-cream-400">
-                    <FormatQuoteIcon sx={{ fontSize: 28, transform: 'rotate(180deg)' }} />
+                <div key={item.id || i} className="bg-white p-3 sm:p-6 md:p-10 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] border border-cream-200 shadow-xl shadow-cream-300/30 relative group hover:-translate-y-3 transition-all duration-500">
+                  <div className="absolute -top-3 sm:-top-4 md:-top-5 right-4 sm:right-6 md:right-10 w-7 h-7 sm:w-9 sm:h-9 md:w-12 md:h-12 bg-ink-500 text-white rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg shadow-cream-400">
+                    <FormatQuoteIcon sx={{ fontSize: 16, transform: 'rotate(180deg)' }} className="sm:!text-xl md:!text-3xl" />
                   </div>
-                  <div className="flex gap-1 mb-6">
-                    {[...Array(5)].map((_, i) => <StarIcon key={i} sx={{ fontSize: 18, color: '#f59e0b' }} />)}
+                  <div className="flex gap-0.5 sm:gap-1 mb-2 sm:mb-4 md:mb-6">
+                    {[...Array(5)].map((_, i) => <StarIcon key={i} sx={{ fontSize: 12, color: '#f59e0b' }} className="sm:!text-base md:!text-lg" />)}
                   </div>
-                  <p className="text-ink-200 font-bold leading-relaxed mb-10 italic">"{item.text}"</p>
-                  <div className="flex items-center gap-4 pt-8 border-t border-cream-100">
-                    <TestimonialAvatar icon={item.icon} gender={item.gender} />
-                    <div>
-                      <h4 className="font-black text-ink-500 text-base">{item.name}</h4>
-                      <p className="text-ink-50 text-[10px] font-black uppercase tracking-widest">{item.role}</p>
+                  <p className="text-ink-200 text-xs sm:text-sm md:text-base font-bold leading-relaxed mb-3 sm:mb-6 md:mb-10 italic line-clamp-4 sm:line-clamp-none">"{item.text}"</p>
+                  <div className="flex items-center gap-2 sm:gap-3 md:gap-4 pt-3 sm:pt-5 md:pt-8 border-t border-cream-100">
+                    <TestimonialAvatar icon={item.icon} gender={item.gender} size={16} className="w-8 h-8 sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-lg sm:rounded-xl md:rounded-2xl shrink-0" />
+                    <div className="min-w-0">
+                      <h4 className="font-black text-ink-500 text-xs sm:text-sm md:text-base truncate">{item.name}</h4>
+                      <p className="text-ink-50 text-[8px] sm:text-[9px] md:text-[10px] font-black uppercase tracking-widest truncate">{item.role}</p>
                     </div>
                   </div>
                 </div>
@@ -583,7 +598,7 @@ export default function HomePage() {
       )}
 
       {/* 7. TEAM SECTION */}
-    {teamMembers.length > 0 && (
+      {teamMembers.length > 0 && (
         <section className="py-32 bg-white" id="team">
           <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
@@ -597,7 +612,7 @@ export default function HomePage() {
                 نخبة من المحترفين يعملون بشغف لتقديم أفضل تجربة عقارية
               </p>
             </div>
- 
+
             <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-8 mb-12">
               {teamMembers.map((m, i) => (
                 <div
@@ -609,7 +624,7 @@ export default function HomePage() {
                 >
                   <div className="relative h-28 sm:h-48 bg-gradient-to-br from-cream-200 to-cream-300 overflow-hidden">
                     {m.image ? (
-                      <img
+                      <img loading="lazy"
                         src={m.image.startsWith('http') ? m.image : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}${m.image}`}
                         alt={m.name}
                         className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700"
@@ -637,7 +652,7 @@ export default function HomePage() {
           </div>
         </section>
       )}
-      
+
       {/* 8. CTA SECTION */}
       <section data-aos="zoom-in" data-aos-duration="800" className="max-w-7xl mx-auto px-6 pb-32">
         <div className="relative overflow-hidden rounded-[4rem] p-20 md:p-28 text-center bg-ink-600 shadow-2xl shadow-ink-700/20">

@@ -11,6 +11,7 @@ import AdminPage from '@/pages/AdminPage'
 import Toast from '@/components/ui/Toast'
 import ScrollToTop from '@/components/ui/ScrollToTop'
 import PWAInstallPrompt from '@/components/PWAInstallPrompt'
+import OfflineScreen from '@/components/OfflineScreen'
 import PropertyComparePage from '@/pages/PropertyComparePage'
 
 import PrivacyPage from '@/pages/PrivacyPage'
@@ -60,6 +61,7 @@ export default function App() {
       <Toast />
       <ScrollToTop /> 
       <PWAInstallPrompt />
+      <OfflineScreen />
       
       <Routes>
         <Route element={<Layout />}>
