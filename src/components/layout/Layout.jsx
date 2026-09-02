@@ -3,7 +3,7 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 
 const NO_FOOTER = ['/admin', '/login', '/register']
-const NO_NAVBAR = ['/login', '/register']
+const NO_NAVBAR = ['/login', '/register', '/admin']
 
 export default function Layout() {
   const { pathname } = useLocation()
