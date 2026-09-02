@@ -101,8 +101,8 @@ export default function Navbar() {
               onClick={() => window.scrollTo(0, 0)}
               className="flex items-center group cursor-pointer no-underline"
             >
-              <div className="h-10 sm:h-11 flex items-center transition-transform duration-300 group-hover:scale-105">
-                <img
+              <div className="h-12 sm:h-14 flex items-center transition-transform duration-300 group-hover:scale-105">
+                <img loading="lazy"
                   src={logoSrc}
                   alt="دليلك العقاري"
                   className="h-full w-auto object-contain"
@@ -146,7 +146,7 @@ export default function Navbar() {
 
                 <div className="w-8 h-8 rounded-full border border-slate-200 overflow-hidden bg-ink-500 flex items-center justify-center shrink-0">
                   {user?.avatar && (user.avatar.startsWith('/') || user.avatar.startsWith('http')) ? (
-                    <img
+                    <img loading="lazy"
                       src={user.avatar.startsWith('http') ? user.avatar : `${import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000'}${user.avatar}`}
                       alt="avatar"
                       className="w-full h-full object-cover"
@@ -201,7 +201,7 @@ export default function Navbar() {
           
           <div className="flex justify-between items-center pb-5 mb-5 border-b border-slate-100">
             <div className="h-8">
-              <img src={logoSrc} alt="Logo" className="h-full w-auto object-contain" />
+              <img loading="lazy" src={logoSrc} alt="Logo" className="h-full w-auto object-contain" />
             </div>
             <button 
               onClick={() => setIsMobileMenuOpen(false)} 
