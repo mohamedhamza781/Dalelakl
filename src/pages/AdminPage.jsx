@@ -17,6 +17,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined"
 import CancelIcon from "@mui/icons-material/Cancel"
 import CloseIcon from "@mui/icons-material/Close"
+import MenuIcon from "@mui/icons-material/Menu"
 import DeleteIcon from "@mui/icons-material/Delete"
 import BarChartIcon from "@mui/icons-material/BarChart"
 import HistoryIcon from "@mui/icons-material/History"
@@ -58,6 +59,7 @@ export default function AdminPage() {
   const navigate = useNavigate()
   const { user } = useSelector(s => s.auth)
   const [activeTab, setActiveTab] = useState("overview")
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
 
   const [stats, setStats] = useState(null)
@@ -763,36 +765,67 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col lg:flex-row font-sans" dir="rtl">
 
-      {/* ── Sidebar ─────────────────────────────────────────── */}
-      <aside className="w-full lg:w-80 bg-ink-500 text-white p-8 flex flex-col shrink-0 z-20 shadow-2xl">
-        <div className="flex items-center gap-4 mb-12 bg-white/5 p-5 rounded-[2rem] border border-white/10">
-          <div className="w-12 h-12 bg-gradient-to-tr from-brass-light to-ink-600 rounded-2xl flex items-center justify-center shadow-lg">
-            <AdminPanelSettingsIcon sx={{ fontSize: 28 }} />
+      {/* ── Mobile top bar (لوحة التحكم على الموبايل) ────────── */}
+      <div className="lg:hidden sticky top-0 z-30 bg-ink-500 text-white px-5 py-4 flex items-center justify-between shadow-lg">
+        <button onClick={() => setMobileMenuOpen(true)} className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center hover:bg-white/20 transition-all">
+          <MenuIcon sx={{ fontSize: 22 }} />
+        </button>
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 bg-gradient-to-tr from-brass-light to-ink-600 rounded-xl flex items-center justify-center shadow">
+            <AdminPanelSettingsIcon sx={{ fontSize: 18 }} />
           </div>
-          <div>
-            <div className="font-black text-lg tracking-tight">لوحة التحكم</div>
-            <div className="text-[10px] font-bold text-brass-light uppercase tracking-widest text-left">Admin Panel</div>
-          </div>
+          <span className="font-black text-sm">لوحة التحكم</span>
         </div>
-        <nav className="flex-1 space-y-3">
+        <div className="w-10 h-10 bg-cream-300 rounded-xl border-2 border-white/20 overflow-hidden">
+          <img loading="lazy" src={`https://ui-avatars.com/api/?name=${user?.name || 'Admin'}&background=0f172a&color=fff`} alt="admin" />
+        </div>
+      </div>
+
+      {/* ── Mobile drawer backdrop ────────────────────────────── */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40" onClick={() => setMobileMenuOpen(false)} />
+      )}
+
+      {/* ── Sidebar (ثابت على الديسكتوب، درج منزلق على الموبايل) ── */}
+      <aside className={`
+        w-72 bg-ink-500 text-white p-6 lg:p-8 flex flex-col shrink-0 shadow-2xl overflow-y-auto
+        fixed inset-y-0 right-0 z-50 transition-transform duration-300 ease-in-out
+        ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}
+        lg:static lg:translate-x-0 lg:w-80 lg:z-20
+      `}>
+        <div className="flex items-center justify-between mb-8 lg:mb-12">
+          <div className="flex items-center gap-4 bg-white/5 p-4 lg:p-5 rounded-[1.5rem] lg:rounded-[2rem] border border-white/10 flex-1">
+            <div className="w-11 h-11 lg:w-12 lg:h-12 bg-gradient-to-tr from-brass-light to-ink-600 rounded-2xl flex items-center justify-center shadow-lg shrink-0">
+              <AdminPanelSettingsIcon sx={{ fontSize: 26 }} />
+            </div>
+            <div>
+              <div className="font-black text-base lg:text-lg tracking-tight">لوحة التحكم</div>
+              <div className="text-[10px] font-bold text-brass-light uppercase tracking-widest text-left">Admin Panel</div>
+            </div>
+          </div>
+          <button onClick={() => setMobileMenuOpen(false)} className="lg:hidden w-10 h-10 shrink-0 mr-3 rounded-xl bg-white/5 flex items-center justify-center hover:bg-white/10 transition-all">
+            <CloseIcon sx={{ fontSize: 20 }} />
+          </button>
+        </div>
+        <nav className="flex-1 space-y-2 lg:space-y-3">
           {menu.map(item => (
-            <button key={item.id} onClick={() => setActiveTab(item.id)}
-              className={`w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-sm font-black transition-all duration-300 ${
-                activeTab === item.id ? "bg-ink-500 text-white shadow-xl shadow-ink-700/40" : "text-ink-50 hover:bg-white/5 hover:text-white"
+            <button key={item.id} onClick={() => { setActiveTab(item.id); setMobileMenuOpen(false) }}
+              className={`w-full flex items-center gap-4 px-5 lg:px-6 py-3.5 lg:py-4 rounded-2xl text-sm font-black transition-all duration-300 ${
+                activeTab === item.id ? "bg-white text-ink-500 shadow-xl shadow-ink-700/40" : "text-ink-50 hover:bg-white/5 hover:text-white"
               }`}>
               {item.icon} {item.label}
             </button>
           ))}
         </nav>
-        <button onClick={handleLogout} className="mt-8 flex items-center justify-center gap-4 px-5 py-4 rounded-2xl text-sm font-black bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all">
+        <button onClick={handleLogout} className="mt-6 lg:mt-8 flex items-center justify-center gap-4 px-5 py-4 rounded-2xl text-sm font-black bg-rose-500/10 text-rose-500 hover:bg-rose-500 hover:text-white transition-all shrink-0">
           <LogoutIcon sx={{ fontSize: 18 }} /> خروج
         </button>
       </aside>
 
       {/* ── Main ────────────────────────────────────────────── */}
-      <main className="flex-1 p-6 lg:p-12 overflow-y-auto">
+      <main className="flex-1 p-5 sm:p-6 lg:p-12 overflow-y-auto min-w-0">
 
-        <header className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
+        <header className="hidden lg:flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
           <div className="relative flex-1 max-w-md">
             <SearchIcon sx={{ fontSize: 20, color: '#94a3b8', position: 'absolute', right: 16, top: '50%', transform: 'translateY(-50%)' }} />
             <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
@@ -811,6 +844,14 @@ export default function AdminPage() {
             </div>
           </div>
         </header>
+
+        {/* شريط بحث مبسّط للموبايل بس (بدون صورة/اسم الأدمن، موجودين فوق بالشريط العلوي) */}
+        <div className="lg:hidden relative mb-6">
+          <SearchIcon sx={{ fontSize: 18, color: '#94a3b8', position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)' }} />
+          <input type="text" value={searchQuery} onChange={e => setSearchQuery(e.target.value)}
+            placeholder="ابحث عن مستخدم أو عقار..."
+            className="w-full bg-white border border-cream-300 rounded-2xl py-3.5 pr-11 pl-4 text-sm font-bold shadow-sm focus:border-brass focus:ring-4 focus:ring-brass/5 outline-none transition-all text-right" />
+        </div>
 
         {/* ══ 1. OVERVIEW ══════════════════════════════════════ */}
         {activeTab === "overview" && (
