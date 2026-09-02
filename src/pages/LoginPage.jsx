@@ -5,11 +5,11 @@ import { useTranslation } from "react-i18next"
 import { loginUser } from "@/store/slices/authSlice"
 import { showToast } from "@/store/slices/uiSlice"
 
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import EmailIcon from "@mui/icons-material/Email"
 import KeyIcon from "@mui/icons-material/Key"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
+import Logo from "@/assets/logo-transparent.png"
 
 export default function LoginPage() {
   const { t, i18n } = useTranslation()
@@ -41,8 +41,8 @@ export default function LoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4 bg-[#F8FAFC]">
       <div className="bg-white p-8 w-full max-w-md rounded-[2.5rem] border border-cream-300 shadow-xl shadow-cream-200/50">
         
-        <div className="w-16 h-16 bg-ink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-cream-300 transition-transform hover:scale-110">
-          <LockOutlinedIcon sx={{ fontSize: 28, color: '#FFFFFF' }} />
+        <div className="w-20 h-20 bg-white border border-cream-200 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-cream-300 transition-transform hover:scale-110 p-3">
+          <img loading="lazy" src={Logo} alt="دليلك العقاري" className="w-full h-full object-contain" />
         </div>
 
         <h1 className="text-2xl font-black mb-2 text-center text-ink-500 tracking-tight">
