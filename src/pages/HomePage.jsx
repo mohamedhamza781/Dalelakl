@@ -257,7 +257,7 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 sm:px-8 grid lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full">
           
-          <div className="order-2 lg:order-1 lg:col-span-7 text-center lg:text-right">
+          <div className="lg:col-span-7 text-center lg:text-right">
             {loadingSettings ? (
               <div className="animate-pulse mb-6">
                 <div className="h-12 sm:h-16 lg:h-20 bg-cream-200 rounded-2xl mb-3 mx-auto lg:mx-0 max-w-lg" />
@@ -335,7 +335,7 @@ export default function HomePage() {
           </div>
 
           {heroProperty && (
-            <div className="order-1 lg:order-2 mb-10 lg:mb-0 lg:mt-0 lg:col-span-5 relative">
+            <div className="mt-10 lg:mt-0 lg:mb-0 lg:col-span-5 relative">
               <div className="relative group max-w-sm mx-auto lg:max-w-none">
                 <div className="absolute -inset-1.5 bg-white/30 rounded-[2.5rem] blur-xl opacity-40 group-hover:opacity-60 transition duration-500" />
 
@@ -575,7 +575,7 @@ export default function HomePage() {
             </div>
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 md:gap-10">
               {testimonials.map((item, i) => (
-                <div key={item.id || i} className="bg-white p-3 sm:p-6 md:p-10 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] border border-cream-200 shadow-xl shadow-cream-300/30 relative group hover:-translate-y-3 transition-all duration-500">
+                <div key={item.id || i} className="[&:last-child:nth-child(odd)]:col-span-2 md:[&:last-child:nth-child(odd)]:col-span-1 [&:last-child:nth-child(odd)]:max-w-sm [&:last-child:nth-child(odd)]:mx-auto md:[&:last-child:nth-child(odd)]:max-w-none bg-white p-3 sm:p-6 md:p-10 rounded-2xl sm:rounded-[2rem] md:rounded-[3rem] border border-cream-200 shadow-xl shadow-cream-300/30 relative group hover:-translate-y-3 transition-all duration-500">
                   <div className="absolute -top-3 sm:-top-4 md:-top-5 right-4 sm:right-6 md:right-10 w-7 h-7 sm:w-9 sm:h-9 md:w-12 md:h-12 bg-ink-500 text-white rounded-lg sm:rounded-xl md:rounded-2xl flex items-center justify-center shadow-lg shadow-cream-400">
                     <FormatQuoteIcon sx={{ fontSize: 16, transform: 'rotate(180deg)' }} className="sm:!text-xl md:!text-3xl" />
                   </div>
