@@ -12,6 +12,7 @@ import Toast from '@/components/ui/Toast'
 import ScrollToTop from '@/components/ui/ScrollToTop'
 import PWAInstallPrompt from '@/components/PWAInstallPrompt'
 import OfflineScreen from '@/components/OfflineScreen'
+import ManifestSwitcher from '@/components/ManifestSwitcher'
 import PropertyComparePage from '@/pages/PropertyComparePage'
 
 import { useScrollToHash } from './hooks/useScrollToHash';
@@ -58,6 +59,7 @@ export default function App() {
       <ScrollToTop /> 
       <PWAInstallPrompt />
       <OfflineScreen />
+      <ManifestSwitcher />
       
       <Routes>
         <Route element={<Layout />}>
