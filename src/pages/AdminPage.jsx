@@ -695,6 +695,17 @@ export default function AdminPage() {
     }
   }
 
+  const handleToggleFeatured = async (id, currentFeatured) => {
+    try {
+      const newFeatured = !currentFeatured
+      await adminAPI.updatePropertyFlags(id, { featured: newFeatured })
+      setProperties(prev => prev.map(p => p.id === id ? { ...p, featured: newFeatured } : p))
+      dispatch(showToast(newFeatured ? 'تمت إضافته للعقارات المميزة ⭐' : 'تم إلغاء تمييز العقار'))
+    } catch (err) {
+      dispatch(showToast(err.message || 'فشل تحديث التمييز'))
+    }
+  }
+
   const handleDeleteProperty = async (id) => {
     if (!window.confirm('هل أنت متأكد من حذف هذا العقار؟')) return
     try {
@@ -962,11 +973,20 @@ export default function AdminPage() {
                         p.status === 'pending' ? 'bg-amber-100 text-amber-600' : 'bg-cream-200 text-ink-100'
                       }`}>{p.status === 'active' ? 'نشط' : p.status === 'pending' ? 'انتظار' : p.status}</span>
                     </div>
-                    <h4 className="font-black text-ink-500 mb-1 text-sm">{p.title}</h4>
+                    <h4 className="font-black text-ink-500 mb-1 text-sm flex items-center gap-1.5">
+                      {p.featured && <StarIcon sx={{ fontSize: 15 }} className="text-amber-500 shrink-0" />}
+                      {p.title}
+                    </h4>
                     <p className="text-[11px] text-ink-50 font-bold mb-4">{p.location}</p>
                     <div className="flex items-center justify-between pt-4 border-t border-cream-100">
                       <span className="text-sm font-black text-ink-500">₪ {p.price?.toLocaleString()}</span>
                       <div className="flex gap-2">
+                        <button
+                          onClick={() => handleToggleFeatured(p.id, p.featured)}
+                          className={`p-2 rounded-xl transition-all ${p.featured ? 'bg-amber-500 text-white hover:bg-cream-200 hover:text-ink-50' : 'bg-amber-50 text-amber-600 hover:bg-amber-500 hover:text-white'}`}
+                          title={p.featured ? 'إزالة من العقارات المميزة' : 'إضافة للعقارات المميزة'}>
+                          <StarIcon sx={{ fontSize: 20 }} />
+                        </button>
                         <button
                           onClick={() => handleToggleVerify(p.id, p.verified)}
                           className={`p-2 rounded-xl transition-all ${p.verified ? 'bg-emerald-500 text-white hover:bg-cream-200 hover:text-ink-50' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white'}`}
