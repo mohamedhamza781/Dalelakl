@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import WifiOffIcon from "@mui/icons-material/WifiOff"
 import RefreshIcon from "@mui/icons-material/Refresh"
-import Logo from "@/logo.png"
+import Logo from "@/assets/logo-transparent.png"
 
 // يظهر شاشة كاملة بشعار الموقع + رسالة "لا يوجد اتصال بالإنترنت"
 // كل ما النت يقطع (بدل ما يبين خطأ المتصفح الافتراضي البشع).
