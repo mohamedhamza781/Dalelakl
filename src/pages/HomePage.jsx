@@ -167,15 +167,19 @@ export default function HomePage() {
   const faqs         = siteSettings?.faqs         || []
 
   // ── Hero text helpers ──────────────────────────────────────
+  // ملاحظة: العنوان والوصف ما عندهم نص افتراضي مقصود — يضلوا فاضيين
+  // (والـ skeleton بيغطيهم وقت التحميل) لحد ما الأدمن يحط نص حقيقي من لوحة التحكم.
+  // البحث (placeholder/زر) بس محتفظين بنص افتراضي لأنه وظيفي مش تسويقي.
   const heroText = {
-    badge:       isEn ? (siteSettings?.hero_badge_en              || t('home.badge'))     : (siteSettings?.hero_badge              || t('home.badge')),
-    line1:       isEn ? (siteSettings?.hero_title_line1_en        || t('home.hero1'))     : (siteSettings?.hero_title_line1        || t('home.hero1')),
-    line2:       isEn ? (siteSettings?.hero_title_line2_en        || t('home.hero2'))     : (siteSettings?.hero_title_line2        || t('home.hero2')),
-    line3:       isEn ? (siteSettings?.hero_title_line3_en        || t('home.hero3'))     : (siteSettings?.hero_title_line3        || t('home.hero3')),
-    subtitle:    isEn ? (siteSettings?.hero_subtitle_en           || t('home.heroSub'))  : (siteSettings?.hero_subtitle           || t('home.heroSub')),
+    badge:       isEn ? (siteSettings?.hero_badge_en              || '') : (siteSettings?.hero_badge              || ''),
+    line1:       isEn ? (siteSettings?.hero_title_line1_en        || '') : (siteSettings?.hero_title_line1        || ''),
+    line2:       isEn ? (siteSettings?.hero_title_line2_en        || '') : (siteSettings?.hero_title_line2        || ''),
+    line3:       isEn ? (siteSettings?.hero_title_line3_en        || '') : (siteSettings?.hero_title_line3        || ''),
+    subtitle:    isEn ? (siteSettings?.hero_subtitle_en           || '') : (siteSettings?.hero_subtitle           || ''),
     placeholder: isEn ? (siteSettings?.hero_search_placeholder_en || t('home.searchPh')) : (siteSettings?.hero_search_placeholder || t('home.searchPh')),
     searchBtn:   isEn ? (siteSettings?.hero_search_btn_en         || t('home.searchBtn')): (siteSettings?.hero_search_btn         || t('home.searchBtn')),
   }
+  const hasHeroText = heroText.line1 || heroText.line2 || heroText.line3
 
   // ── About image helper ─────────────────────────────────────
   const aboutImageUrl = siteSettings?.about_image
@@ -250,10 +254,10 @@ export default function HomePage() {
                 <div className="h-12 sm:h-16 lg:h-20 bg-cream-200 rounded-2xl mb-3 mx-auto lg:mx-0 max-w-md" />
                 <div className="h-12 sm:h-16 lg:h-20 bg-cream-200 rounded-2xl mx-auto lg:mx-0 max-w-sm" />
               </div>
-            ) : (
+            ) : hasHeroText ? (
               <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-black leading-[1.18] mb-6 text-ink-500 tracking-tight">
                 {heroText.line1}
-                <br />
+                {heroText.line1 && <br />}
                 <span className="relative inline-block my-1">
                   <span className="relative z-10 text-transparent bg-clip-text bg-gradient-to-l from-ink-500 via-ink-400 to-ink-300">
                     {heroText.line2}
@@ -273,21 +277,21 @@ export default function HomePage() {
                     />
                   </svg>
                 </span>
-                <br />
+                {heroText.line3 && <br />}
                 {heroText.line3}
               </h1>
-            )}
+            ) : null}
 
             {loadingSettings ? (
               <div className="animate-pulse mb-10">
                 <div className="h-5 bg-cream-200 rounded-full mb-2 mx-auto lg:mx-0 max-w-xl" />
                 <div className="h-5 bg-cream-200 rounded-full mx-auto lg:mx-0 max-w-md" />
               </div>
-            ) : (
+            ) : heroText.subtitle ? (
               <p className="text-ink-200 text-base sm:text-lg lg:text-xl mb-10 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed">
                 {heroText.subtitle}
               </p>
-            )}
+            ) : null}
 
             <div className="max-w-2xl mx-auto lg:mx-0 bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-2 sm:p-2.5 shadow-2xl shadow-ink-500/5 transition-all focus-within:border-slate-400 focus-within:shadow-slate-200/50">
               <div className="flex flex-col sm:flex-row gap-2">
