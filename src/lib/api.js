@@ -72,6 +72,7 @@ export const propertiesAPI = {
     const qs = params.toString()
     return get(`/properties/featured${qs ? `?${qs}` : ''}`)
   },
+  getCities:   ()         => get('/properties/cities'),
   getStats:    ()         => get('/properties/stats'),
   create:      (data)     => post('/properties', data),
   update:      (id, data) => put(`/properties/${id}`, data),

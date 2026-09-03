@@ -73,10 +73,8 @@ export default function PropertiesPage() {
   // ── قائمة المدن الحقيقية المستخرجة من العقارات المخزّنة فعلياً ──
   const [cities, setCities] = useState([])
   useEffect(() => {
-    propertiesAPI.getAll({ limit: 500 }).then(res => {
-      const list = res?.properties || []
-      const unique = [...new Set(list.map(p => p.city).filter(Boolean))]
-      setCities(unique)
+    propertiesAPI.getCities().then(res => {
+      setCities(res?.cities || [])
     }).catch(() => {})
   }, [])
 

@@ -1,26 +1,35 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { Suspense, lazy } from 'react'
 import Layout from '@/components/layout/Layout'
 import HomePage from '@/pages/HomePage'
-import PropertiesPage from '@/pages/PropertiesPage'
-import PropertyDetailPage from '@/pages/PropertyDetailPage'
-import LoginPage from '@/pages/LoginPage'
-import RegisterPage from '@/pages/RegisterPage'
-import AccountPage from '@/pages/AccountPage'
-import AdminPage from '@/pages/AdminPage'
+// ── Code splitting: باقي الصفحات تتحمل بس لما المستخدم يزورها فعلياً ──
+// (بدل ما الكل يتحمل مسبقاً من أول زيارة حتى لو المستخدم بس زار الرئيسية)
+const PropertiesPage       = lazy(() => import('@/pages/PropertiesPage'))
+const PropertyDetailPage   = lazy(() => import('@/pages/PropertyDetailPage'))
+const LoginPage            = lazy(() => import('@/pages/LoginPage'))
+const RegisterPage         = lazy(() => import('@/pages/RegisterPage'))
+const AccountPage          = lazy(() => import('@/pages/AccountPage'))
+const AdminPage            = lazy(() => import('@/pages/AdminPage'))
+const PropertyComparePage  = lazy(() => import('@/pages/PropertyComparePage'))
+const ContactPage          = lazy(() => import('@/pages/ContactPage'))
+const TeamPage             = lazy(() => import('@/pages/TeamPage'))
 import Toast from '@/components/ui/Toast'
 import ScrollToTop from '@/components/ui/ScrollToTop'
 import PWAInstallPrompt from '@/components/PWAInstallPrompt'
 import OfflineScreen from '@/components/OfflineScreen'
 import ManifestSwitcher from '@/components/ManifestSwitcher'
-import PropertyComparePage from '@/pages/PropertyComparePage'
 
 import { useScrollToHash } from './hooks/useScrollToHash';
 
-import ContactPage from '@/pages/ContactPage';
-
-
-import TeamPage from "@/pages/TeamPage"; // تأكد من أن المسار صحيح حسب مكان الملف عندك
+// مؤشر تحميل بسيط لحظة تحميل صفحة جديدة (chunk) — نفس ستايل السبينر المستخدم بباقي الموقع
+function PageLoader() {
+  return (
+    <div className="min-h-[60vh] flex items-center justify-center">
+      <div className="w-10 h-10 border-4 border-cream-300 border-t-brass rounded-full animate-spin" />
+    </div>
+  )
+}
 
 
 // --- مكون صغير لمعالجة التمرير داخل نطاق الراوتر ---
@@ -64,18 +73,18 @@ export default function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/properties" element={<PropertiesPage />} />
-          <Route path="/properties/:slug" element={<PropertyDetailPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/properties" element={<Suspense fallback={<PageLoader />}><PropertiesPage /></Suspense>} />
+          <Route path="/properties/:slug" element={<Suspense fallback={<PageLoader />}><PropertyDetailPage /></Suspense>} />
+          <Route path="/login" element={<Suspense fallback={<PageLoader />}><LoginPage /></Suspense>} />
+          <Route path="/register" element={<Suspense fallback={<PageLoader />}><RegisterPage /></Suspense>} />
           
-          <Route path="/compare" element={<PropertyComparePage />} />
+          <Route path="/compare" element={<Suspense fallback={<PageLoader />}><PropertyComparePage /></Suspense>} />
 
-          <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
-          <Route path="/admin" element={<ProtectedRoute roles={['admin']}><AdminPage /></ProtectedRoute>} />
+          <Route path="/account" element={<ProtectedRoute><Suspense fallback={<PageLoader />}><AccountPage /></Suspense></ProtectedRoute>} />
+          <Route path="/admin" element={<ProtectedRoute roles={['admin']}><Suspense fallback={<PageLoader />}><AdminPage /></Suspense></ProtectedRoute>} />
           
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/team" element={<TeamPage />} />
+          <Route path="/contact" element={<Suspense fallback={<PageLoader />}><ContactPage /></Suspense>} />
+          <Route path="/team" element={<Suspense fallback={<PageLoader />}><TeamPage /></Suspense>} />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route> 
